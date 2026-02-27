@@ -1,8 +1,8 @@
 ---
 title: "Data&ML Lunch - Felix Pultar (Microsoft Research)"
 series: "Data&ML Lunch"
-startsAt: "2026-04-14T12:00:00+01:00"
-endsAt: "2026-04-14T14:00:00+01:00"
+startsAt: "2026-04-14T12:00:00"
+endsAt: "2026-04-14T14:00:00"
 location: "HCI F309, ETH Zurich Hönggerberg"
 summary: "Data&ML lunch - Felix Pultar (Microsoft Research)"
 articleTitle: "Data&ML lunch - Felix Pultar (Microsoft Research)"

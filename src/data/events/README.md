@@ -20,13 +20,13 @@ Standalone (non-event) news items live in:
 
 - `title`
 - `series`
-- `startsAt` (ISO datetime with timezone, example: `2026-03-18T18:00:00+01:00`)
+- `startsAt` (local Zurich datetime, example: `2026-03-18T18:00:00`)
 - `location`
 - `summary`
 
 ## Optional Frontmatter Fields
 
-- `endsAt`
+- `endsAt` (local Zurich datetime, example: `2026-03-18T20:00:00`)
 - `articleTitle`
 - `articleExcerpt`
 - `publishedAt`
@@ -39,6 +39,11 @@ Standalone (non-event) news items live in:
 ## Photos
 
 Store event photos inside the matching photo directory.
+
+## Timezone Rules
+
+- `startsAt` and `endsAt` are interpreted in `Europe/Zurich`.
+- Do not manually add `+01:00` or `+02:00`; daylight saving time is applied automatically by date.
 
 Example:
 

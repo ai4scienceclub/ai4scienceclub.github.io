@@ -6,7 +6,7 @@ export const footerSocials = [
   },
   {
     name: 'Email',
-    url: 'mailto:shaun@ai4science.ch',
+    url: 'mailto:info@ai4science.ch',
     icon: "mdi:email-outline",
   },
 ]

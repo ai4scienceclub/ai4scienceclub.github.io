@@ -1,8 +1,8 @@
 ---
 title: "Data&ML Lunch - Julian Götz (Roche)"
 series: "Data&ML Lunch"
-startsAt: "2026-03-03T17:00:00+01:00"
-endsAt: "2026-03-03T19:00:00+01:00"
+startsAt: "2026-03-03T17:00:00"
+endsAt: "2026-03-03T19:00:00"
 location: "HCI, ETH Zurich Hönggerberg"
 summary: "Data&ML lunch - Julian Götz (Roche)"
 articleTitle: "Data&ML lunch - Julian Götz (Roche)"
