@@ -1,0 +1,70 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../layouts/Page.astro';
+import GetInvolvedForm from '../components/forms/GetInvolvedForm.astro';
+---
+
+<Layout
+	seo={{
+		title: 'Get involved | AI4Science Club Zurich',
+		description: 'Join AI4Science Club Zurich as participant, speaker, or partner.',
+	}}
+>
+	<Container>
+		<section class="get-involved-page">
+			<div class="get-involved-page__text">
+				<h1>Get involved</h1>
+				<p>
+					Want to join, speak, organize, or support an event series? We would love
+					to hear from you.
+				</p>
+				<p>
+					Use the form and we will get back to you by email.
+				</p>
+				<p>
+					Direct contact:
+					<a href="mailto:shaun@ai4science.ch">shaun@ai4science.ch</a>
+				</p>
+			</div>
+
+			<div class="get-involved-page__form-card">
+				<h2>Contact form</h2>
+				<GetInvolvedForm />
+			</div>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.get-involved-page {
+		margin: var(--section-margin) auto;
+		display: grid;
+		grid-template-columns: minmax(0, 1fr) minmax(320px, 0.95fr);
+		gap: 1rem;
+		align-items: start;
+	}
+
+	.get-involved-page__text {
+		background: linear-gradient(150deg, var(--theme-surface-1), var(--theme-bg));
+		border-radius: calc(var(--theme-shape-radius) + 0.5rem);
+		padding: clamp(1rem, 2vw, 1.8rem);
+	}
+
+	.get-involved-page__form-card {
+		background: var(--theme-surface-1);
+		color: var(--theme-on-surface-1);
+		border-radius: calc(var(--theme-shape-radius) + 0.5rem);
+		padding: clamp(1rem, 2vw, 1.2rem);
+	}
+
+	.get-involved-page__form-card h2 {
+		font-size: var(--font-size-lg);
+		margin-bottom: 0.6rem;
+	}
+
+	@media (max-width: 920px) {
+		.get-involved-page {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

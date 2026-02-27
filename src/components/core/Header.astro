@@ -57,9 +57,20 @@ const { navData, rightMenu } = Astro.props;
   <div class="header-nav__container">
     <slot name="nav">
       {navData && <nav>
-        <ul>
+        <ul class="main-nav__list">
           {navData.map(navItem => (
-            (<li><a href={navItem.slug} >{navItem.title}</a></li>)
+            navItem.children?.length ? (
+              <li class="main-nav__item main-nav__item--dropdown">
+                <span class="nav-dropdown__label" tabindex="0">{navItem.title}</span>
+                <ul class="nav-submenu">
+                  {navItem.children.map(child => (
+                    <li><a href={child.slug}>{child.title}</a></li>
+                  ))}
+                </ul>
+              </li>
+            ) : (
+              <li class="main-nav__item"><a href={navItem.slug} >{navItem.title}</a></li>
+            )
           ))}
         </ul>
       </nav>}
@@ -112,21 +123,77 @@ const { navData, rightMenu } = Astro.props;
   nav {
   display: flex;
   }
-  nav ul {
+  nav > ul.main-nav__list {
     margin: 0;
     padding: 0;
     list-style: none;
     display: flex;
+    align-items: center;
   }
-  nav ul li a {
+  .main-nav__item > a {
     text-decoration: none;
     margin-right: 1rem;
     color: inherit;
     opacity: 0.72;
     transition: opacity linear 150ms;
   }
-  nav ul li a:hover {
+  .main-nav__item > a:hover {
     opacity: 1;
+  }
+  .main-nav__item--dropdown {
+    margin-right: 1rem;
+    position: relative;
+  }
+  .main-nav__item--dropdown::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: max(100%, 13rem);
+    height: 0.85rem;
+  }
+  .nav-dropdown__label {
+    list-style: none;
+    cursor: default;
+    opacity: 0.72;
+    display: inline-flex;
+    align-items: center;
+    -webkit-tap-highlight-color: transparent;
+    outline: none;
+  }
+  .main-nav__item--dropdown:hover .nav-dropdown__label,
+  .main-nav__item--dropdown:focus-within .nav-dropdown__label {
+    opacity: 1;
+  }
+  .nav-submenu {
+    display: none;
+    margin: 0;
+    padding: 0.45rem;
+    list-style: none;
+    gap: 0.25rem;
+    border-radius: 0.65rem;
+    background: var(--theme-bg);
+    border: 1px solid var(--theme-surface-1);
+    min-width: 13rem;
+    position: absolute;
+    top: calc(100% + 0.35rem);
+    left: 0;
+    z-index: 120;
+  }
+  .main-nav__item--dropdown:hover .nav-submenu,
+  .main-nav__item--dropdown:focus-within .nav-submenu {
+    display: grid;
+  }
+  .nav-submenu li a {
+    display: block;
+    text-decoration: none;
+    padding: 0.35rem 0.45rem;
+    border-radius: 0.45rem;
+    opacity: 0.86;
+  }
+  .nav-submenu li a:hover {
+    opacity: 1;
+    background: var(--theme-surface-1);
   }
   @media(max-width: 600px) {
     #menuButton {
@@ -148,13 +215,27 @@ const { navData, rightMenu } = Astro.props;
     header[mobile-menu-open] .header-nav__container {
       display: flex;
     }
-    header[mobile-menu-open] nav ul {
+    header[mobile-menu-open] nav > ul.main-nav__list {
       align-items: center;
       flex-direction: column;
     }
-     header[mobile-menu-open] nav ul li {
+     header[mobile-menu-open] nav > ul.main-nav__list > li {
        font-size: var(--font-size-lg);
        margin-bottom: 1rem;
+     }
+     header[mobile-menu-open] .nav-submenu {
+      display: grid;
+      position: static;
+      background: transparent;
+      border: 0;
+      margin-top: 0.5rem;
+      padding: 0;
+      min-width: auto;
+      text-align: center;
+     }
+     header[mobile-menu-open] .nav-submenu li a {
+      font-size: var(--font-size-base);
+      padding: 0.2rem 0.4rem;
      }
   }
 </style>

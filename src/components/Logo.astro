@@ -1,18 +1,62 @@
 ---
 ---
 
-<p class="odyssey-logo">Odyssey</p>
+<p class="club-logo">
+	<img
+		class="club-logo__icon club-logo__icon--dark"
+		src="/assets/images/brand/Icon_black.png"
+		alt=""
+		width="32"
+		height="32"
+		decoding="async"
+		loading="eager"
+	/>
+	<img
+		class="club-logo__icon club-logo__icon--light"
+		src="/assets/images/brand/Icon_white.png"
+		alt=""
+		width="32"
+		height="32"
+		decoding="async"
+		loading="eager"
+	/>
+	<span>AI4Science Zurich</span>
+</p>
 
 <style>
-	.odyssey-logo {
+	.club-logo {
 		width: fit-content;
 		margin: 0;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.5rem;
 		font-family: var(--theme-font-family-serif);
-    font-size: var(--font-size-md);
+		font-size: var(--font-size-md);
 		color: inherit;
 	}
-	.odyssey-logo:hover {
-		text-decoration: underline;
-		cursor: pointer;
+
+	.club-logo__icon {
+		width: 1.4rem;
+		height: 1.4rem;
+		object-fit: contain;
+		flex: 0 0 auto;
+	}
+
+	.club-logo__icon--light {
+		display: none;
+	}
+
+	:global(html[data-theme='light']) .club-logo__icon--light {
+		display: block;
+	}
+
+	:global(html[data-theme='light']) .club-logo__icon--dark {
+		display: none;
+	}
+
+	@media (max-width: 600px) {
+		.club-logo {
+			font-size: var(--font-size-base);
+		}
 	}
 </style>

@@ -1,40 +1,37 @@
 ---
-import { Button, Container, TextCardSection } from '@components/odyssey-theme';
+import { Button, Container } from '@components/odyssey-theme';
 import Layout from '../layouts/Page.astro';
 
 const seo = {
-	title: 'Get Started using the Astro Odyssey Theme',
-	description: 'Get started on how to setup and use this Astro theme.',
+	title: 'Page not found | AI4Science Club Zurich',
+	description: 'The page you requested could not be found.',
 };
 ---
 
 <Layout {seo}>
 	<Container>
-		<TextCardSection>
+		<section class="not-found-card">
 			<h1>404</h1>
 			<h2>Page Not Found 👀</h2>
 			<div class="cta-buttons__container">
 				<Button href="/">Return Home</Button>
 			</div>
-		</TextCardSection>
+		</section>
 	</Container>
 </Layout>
 
 <style>
+	.not-found-card {
+		margin: var(--section-margin) auto;
+		padding: 1.25rem;
+		border-radius: calc(var(--theme-shape-radius) + 0.3rem);
+		background: var(--theme-surface-1);
+	}
 	.cta-buttons__container {
 		display: flex;
 		flex-wrap: wrap;
 	}
 	.cta-buttons__container :global(a) {
-		margin-right: 1rem;
-		margin-bottom: 1rem;
-	}
-	.code-buttons__container {
-		margin: 1rem auto;
-		display: flex;
-		flex-wrap: wrap;
-	}
-	.code-buttons__container > a {
 		margin-right: 1rem;
 		margin-bottom: 1rem;
 	}

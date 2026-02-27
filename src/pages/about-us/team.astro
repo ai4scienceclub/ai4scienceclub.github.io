@@ -1,0 +1,256 @@
+---
+import { Container } from '@components/odyssey-theme';
+import { Icon } from 'astro-icon/components';
+import Layout from '../../layouts/Page.astro';
+---
+
+<Layout
+	seo={{
+		title: 'Our team | AI4Science Club Zurich',
+		description: 'Team overview for AI4Science Club Zurich.',
+	}}
+>
+	<Container>
+		<section class="team-page">
+			<h1>Our team</h1>
+			<div class="team-grid">
+				<article class="team-card">
+					<div class="team-card__media">
+						<div class="team-card__flip">
+							<div class="team-card__face team-card__face--front">
+								<img
+									src="/assets/images/about/Malte.jpeg"
+									alt="Malte Franke"
+									loading="lazy"
+									decoding="async"
+									width="1200"
+									height="1500"
+								/>
+							</div>
+							<div class="team-card__face team-card__face--back">
+								<p>
+									Malte leads the strategic direction of AI4Science Club Zurich and
+									focuses on building a strong, connected local community across
+									research and practice.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="team-card__meta">
+						<h2>Malte Franke</h2>
+						<p class="team-card__role">President</p>
+						<a
+							href="https://www.linkedin.com/in/malte-franke/"
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Malte Franke on LinkedIn"
+							title="Malte Franke on LinkedIn"
+						>
+							<Icon name="mdi:linkedin" width="22" height="22" />
+						</a>
+					</div>
+				</article>
+				<article class="team-card">
+					<div class="team-card__media">
+						<div class="team-card__flip">
+							<div class="team-card__face team-card__face--front">
+								<img
+									src="/assets/images/about/Stefan_P_Schmid.jpg"
+									alt="Stefan P. Schmid"
+									loading="lazy"
+									decoding="async"
+									width="1200"
+									height="1500"
+								/>
+							</div>
+							<div class="team-card__face team-card__face--back">
+								<p>
+									Stefan drives operations and execution, coordinating programs and
+									processes so ideas can move from concept to high-quality club
+									activities.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="team-card__meta">
+						<h2>Stefan P. Schmid</h2>
+						<p class="team-card__role">VP &amp; COO</p>
+						<a
+							href="https://www.linkedin.com/in/stefan-philipp-schmid/"
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Stefan P. Schmid on LinkedIn"
+							title="Stefan P. Schmid on LinkedIn"
+						>
+							<Icon name="mdi:linkedin" width="22" height="22" />
+						</a>
+					</div>
+				</article>
+				<article class="team-card">
+					<div class="team-card__media">
+						<div class="team-card__flip">
+							<div class="team-card__face team-card__face--front">
+								<img
+									src="/assets/images/about/Shaun.jpg"
+									alt="Shaun O'Hare"
+									loading="lazy"
+									decoding="async"
+									width="1200"
+									height="1500"
+								/>
+							</div>
+							<div class="team-card__face team-card__face--back">
+								<p>
+									Shaun leads finance and partnerships, helping the club stay
+									sustainable while expanding opportunities for members and event
+									initiatives.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="team-card__meta">
+						<h2>Shaun O'Hare</h2>
+						<p class="team-card__role">VP &amp; CFO</p>
+						<a
+							href="https://www.linkedin.com/in/shaun-ohare/"
+							target="_blank"
+							rel="noopener noreferrer"
+							aria-label="Shaun O'Hare on LinkedIn"
+							title="Shaun O'Hare on LinkedIn"
+						>
+							<Icon name="mdi:linkedin" width="22" height="22" />
+						</a>
+					</div>
+				</article>
+			</div>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.team-page {
+		margin: var(--section-margin) auto;
+	}
+
+	.team-grid {
+		margin-top: 0.9rem;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.9rem;
+	}
+
+	.team-card {
+		background: var(--theme-surface-1);
+		color: var(--theme-on-surface-1);
+		padding: 0.7rem;
+		border-radius: calc(var(--theme-shape-radius) + 0.4rem);
+	}
+
+	.team-card__media {
+		width: 100%;
+		max-width: 17.5rem;
+		aspect-ratio: 4 / 5;
+		display: block;
+		margin: 0 auto 0.65rem;
+		perspective: 1200px;
+	}
+
+	.team-card__flip {
+		position: relative;
+		width: 100%;
+		height: 100%;
+		transition: transform var(--theme-transition);
+		transform-style: preserve-3d;
+	}
+
+	.team-card__media:hover .team-card__flip,
+	.team-card__media:focus-within .team-card__flip {
+		transform: rotateY(180deg);
+	}
+
+	.team-card__face {
+		position: absolute;
+		inset: 0;
+		border-radius: calc(var(--theme-shape-radius) + 0.25rem);
+		backface-visibility: hidden;
+		-webkit-backface-visibility: hidden;
+	}
+
+	.team-card__face--front img {
+		width: 100%;
+		height: 100%;
+		object-fit: contain;
+		background: var(--theme-bg);
+		border-radius: inherit;
+		display: block;
+	}
+
+	.team-card__face--back {
+		display: grid;
+		place-items: center;
+		padding: 1rem;
+		background: var(--theme-bg);
+		border: 1px solid var(--theme-surface-2);
+		transform: rotateY(180deg);
+	}
+
+	.team-card__face--back p {
+		margin: 0;
+		font-size: var(--font-size-sm);
+		line-height: 1.45;
+		text-align: center;
+	}
+
+	.team-card h2 {
+		font-size: var(--font-size-md);
+		margin-bottom: 0.2rem;
+	}
+
+	.team-card__role {
+		margin: 0;
+		font-size: 0.98rem;
+		font-weight: 700;
+		letter-spacing: 0.02em;
+		opacity: 1;
+	}
+
+	.team-card__meta {
+		display: grid;
+		grid-template-columns: 1fr auto;
+		align-items: center;
+		column-gap: 0.6rem;
+		row-gap: 0.2rem;
+	}
+
+	.team-card__meta p {
+		grid-column: 1;
+	}
+
+	.team-card__meta a {
+		grid-column: 2;
+		grid-row: 1 / span 2;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		opacity: 0.86;
+	}
+
+	.team-card__meta a:hover {
+		opacity: 1;
+	}
+
+	@media (hover: none) {
+		.team-card__media .team-card__flip {
+			transform: none !important;
+		}
+		.team-card__face--back {
+			display: none;
+		}
+	}
+
+	@media (max-width: 1000px) {
+		.team-grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>

@@ -1,0 +1,54 @@
+---
+import { Button, FormInput, FormTextarea } from '@components/odyssey-theme';
+import settings from '../../config/settings';
+---
+
+<form
+	name="Get Involved Contact Form"
+	method="POST"
+	action="https://formsubmit.co/shaun@ai4science.ch"
+>
+	<input type="hidden" name="_subject" value="AI4Science Club - Get Involved Form Submission" />
+	<input type="hidden" name="_captcha" value="false" />
+	<input type="hidden" name="_template" value="table" />
+	<input type="hidden" name="_next" value={`${settings.url}/get-involved/thanks`} />
+	<input type="text" name="_honey" tabindex="-1" autocomplete="off" class="hidden-field" />
+
+	<FormInput
+		type="text"
+		label="Name"
+		name="name"
+		placeholder="Your full name"
+		required
+	/>
+	<FormInput
+		type="email"
+		label="Email address"
+		name="email"
+		placeholder="you@domain.com"
+		required
+	/>
+	<FormTextarea
+		label="Message"
+		name="message"
+		placeholder="How would you like to get involved?"
+		rows={6}
+		required
+	/>
+
+	<Button>Send message</Button>
+</form>
+
+<style>
+	form {
+		display: grid;
+		gap: 0.85rem;
+	}
+
+	.hidden-field {
+		position: absolute;
+		left: -9999px;
+		opacity: 0;
+		pointer-events: none;
+	}
+</style>

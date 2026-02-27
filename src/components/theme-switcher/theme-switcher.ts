@@ -4,38 +4,10 @@ import { customElement, property } from 'lit/decorators.js';
 import {
 	classicThemeIcon,
 	darkThemeIcon,
-	earthThemeIcon,
-	blueThemeIcon,
-	orangeThemeIcon,
 } from './icons';
 
-const themes = [
-  {
-    name: 'default',
-    icon: classicThemeIcon,
-    label: 'Classic',
-  },
-  {
-    name: 'dark',
-    icon: darkThemeIcon,
-    label: 'Dark',
-  },
-  {
-    name: 'earth',
-    icon: earthThemeIcon,
-    label: 'Earth',
-  },
-  {
-    name: 'ocean',
-    icon: blueThemeIcon,
-    label: 'Ocean',
-  },
-  {
-    name: 'sand',
-    icon: orangeThemeIcon,
-    label: 'Sand',
-  }
-]
+const validThemes = ['light', 'dark'] as const;
+type ThemeName = (typeof validThemes)[number];
 
 @customElement('theme-switcher')
 export class ThemeSwitcher extends LitElement {
@@ -46,34 +18,21 @@ export class ThemeSwitcher extends LitElement {
 			}
 			button {
 				display: inline-flex;
+				align-items: center;
+				gap: 0.5rem;
 				outline: none;
-				border: none;
 				background-color: transparent;
-				border: 2px solid transparent;
-				border-radius: 20rem;
-				padding: 1px;
-				cursor: pointer;
-				transition: border var(--theme-transition);
-			}
-			button[active] {
 				border: 2px solid var(--theme-primary);
-        box-shadow: 0 0 12px 1px var(--theme-primary);
+				color: var(--theme-on-bg);
+				border-radius: 999px;
+				padding: 0.25rem 0.75rem;
+				cursor: pointer;
+				transition: box-shadow var(--theme-transition);
 			}
 			button:hover {
-				border: 2px solid var(--theme-primary);
+				box-shadow: 0 0 12px 1px var(--theme-primary);
 			}
-			.theme-switcher__container {
-				margin: 2rem 0;
-				display: grid;
-				grid-template-columns: repeat(5, 1fr);
-			}
-			.theme-select__container {
-				display: flex;
-				flex-direction: column;
-				align-items: center;
-				justify-content: center;
-			}
-			.theme-select__container p {
+			button span {
 				font-size: var(--font-size-sm);
 			}
 		`,
@@ -88,66 +47,59 @@ export class ThemeSwitcher extends LitElement {
 	private _getCurrentTheme() {
 		// check for a local storage theme first
 		const localStorageTheme = localStorage.getItem('theme');
-		if (localStorageTheme !== null) {
+		if (localStorageTheme === 'default') {
+			this._setTheme('light');
+			return;
+		}
+
+		if (localStorageTheme && this._isValidTheme(localStorageTheme)) {
 			this._setTheme(localStorageTheme);
-		} else {
-    	// Set default theme to dark if the operating system specifies this preference
-			if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-				this._setTheme('dark');
-			} else{ // Set to default/light theme if no specification, or light theme is specified
-				this._setTheme('default');
-			}
-    		
-    }
+			return;
+		}
+
+		this._setTheme('dark');
 	}
 
   firstUpdated() {
     this._getCurrentTheme();
   }
 
-	private _setTheme(theme) {
-		this._doc.setAttribute('data-theme', theme);
+	private _isValidTheme(theme: string): theme is ThemeName {
+		return validThemes.includes(theme as ThemeName);
+	}
 
-    const _heroImage = document.querySelector('#home-hero-image') as HTMLImageElement;
-		if (theme === 'default') {
-			_heroImage.src = '/assets/images/home/classic-hero.jpg';
-		}
-		if (theme === 'dark') {
-			_heroImage.src = '/assets/images/home/dark-hero.jpg';
-		}
-		if (theme === 'earth') {
-			_heroImage.src = '/assets/images/home/earth-hero.jpg';
-		}
-		if (theme === 'ocean') {
-			_heroImage.src = '/assets/images/home/ocean-hero.jpg';
-		}
-		if (theme === 'sand') {
-			_heroImage.src = '/assets/images/home/sand-hero.jpg';
+	private _setTheme(theme: ThemeName) {
+		this._doc.setAttribute('data-theme', theme);
+		const favicon = document.querySelector("link[rel='icon']") as HTMLLinkElement | null;
+		if (favicon) {
+			favicon.href =
+				theme === 'light'
+					? '/assets/images/brand/Icon_white.png'
+					: '/assets/images/brand/Icon_black.png';
 		}
 		localStorage.setItem('theme', theme);
 		this.theme = theme;
 	}
 
+	private _toggleTheme() {
+		const nextTheme: ThemeName = this.theme === 'dark' ? 'light' : 'dark';
+		this._setTheme(nextTheme);
+	}
+
 	render() {
-    const themeButtons = html`${themes.map((theme) => {
-      return html`
-      <div class="theme-select__container">
-        <button
-          @click=${() => this._setTheme(theme.name)}
-          ?active=${this.theme === theme.name}
-          title=${`Enable ${theme.label} Theme`}
-        >
-          ${theme.icon}
-        </button>
-        <p>${theme.label}</p>
-        </div>
-      `
-    })}`
+		const isDark = this.theme === 'dark';
+		const nextLabel = isDark ? 'Light' : 'Dark';
+		const nextIcon = isDark ? classicThemeIcon : darkThemeIcon;
 
 		return html`
-			<div class="theme-switcher__container">
-				${themeButtons}
-			</div>
+			<button
+				@click=${() => this._toggleTheme()}
+				title=${`Switch to ${nextLabel} theme`}
+				aria-label=${`Switch to ${nextLabel} theme`}
+			>
+				${nextIcon}
+				<span>${nextLabel}</span>
+			</button>
 		`;
 	}
 }

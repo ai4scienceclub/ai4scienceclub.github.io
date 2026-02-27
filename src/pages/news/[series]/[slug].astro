@@ -1,0 +1,104 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../../../layouts/Page.astro';
+import {
+	formatEventDate,
+	formatEventTime,
+	getAllEvents,
+	getEventBySeriesAndSlug,
+} from '../../../utils/events';
+
+export function getStaticPaths() {
+	return getAllEvents()
+		.filter((event) => event.status !== 'cancelled')
+		.map((event) => ({
+			params: {
+				series: event.seriesSlug,
+				slug: event.slug,
+			},
+		}));
+}
+
+const { series, slug } = Astro.params;
+const event = getEventBySeriesAndSlug(series ?? '', slug ?? '');
+
+if (!event) {
+	throw new Error(`Event article not found for ${series}/${slug}`);
+}
+
+const Content = event.Content as any;
+---
+
+<Layout seo={{ title: `${event.articleTitle} | AI4Science Zurich`, description: event.articleExcerpt }}>
+	<Container narrow>
+		<article class="news-article">
+			<p class="news-article__meta">{event.series} • {formatEventDate(event.startDate)}</p>
+			<h1>{event.articleTitle}</h1>
+			<p class="news-article__lede">{event.articleExcerpt}</p>
+			<div class="news-article__details">
+				<p><strong>When:</strong> {formatEventDate(event.startDate)} at {formatEventTime(event.startDate)}</p>
+				<p><strong>Where:</strong> {event.location}</p>
+				{event.registrationUrl && (
+					<p>
+						<strong>Registration:</strong> <a href={event.registrationUrl} target="_blank" rel="noreferrer">Open registration</a>
+					</p>
+				)}
+			</div>
+			{event.coverImage && (
+				<img
+					class="news-article__cover"
+					src={event.coverImage}
+					alt={event.coverAlt}
+					loading="eager"
+					decoding="async"
+				/>
+			)}
+			<div class="news-article__content">
+				<Content />
+			</div>
+			<p class="news-article__back"><a href="/news">Back to all updates</a></p>
+		</article>
+	</Container>
+</Layout>
+
+<style>
+	.news-article {
+		margin: var(--section-margin) auto;
+	}
+
+	.news-article__meta {
+		opacity: 0.72;
+		font-size: var(--font-size-sm);
+	}
+
+	.news-article__lede {
+		max-width: 70ch;
+		opacity: 0.9;
+	}
+
+	.news-article__details {
+		margin: 1.5rem 0;
+		padding: 1rem;
+		border-radius: 0.75rem;
+		background: var(--theme-surface-1);
+	}
+
+	.news-article__cover {
+		width: 100%;
+		border-radius: calc(var(--theme-shape-radius) + 0.25rem);
+		margin-bottom: 1.5rem;
+	}
+
+	.news-article__content {
+		max-width: 72ch;
+	}
+
+	.news-article__back {
+		margin-top: 2rem;
+	}
+
+	.news-article__back a {
+		text-decoration: none;
+		border-bottom: 2px solid var(--theme-primary);
+	}
+</style>

@@ -1,0 +1,26 @@
+---
+import { Button, Container } from '@components/odyssey-theme';
+import Layout from '../../layouts/Page.astro';
+---
+
+<Layout
+	seo={{
+		title: 'Thank you | AI4Science Club Zurich',
+		description: 'Your message has been sent to AI4Science Club Zurich.',
+	}}
+>
+	<Container narrow>
+		<section class="thanks-page">
+			<h1>Thank you</h1>
+			<p>Your message has been submitted successfully.</p>
+			<p>We will get back to you as soon as possible.</p>
+			<Button href="/get-involved">Back to Get involved</Button>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.thanks-page {
+		margin: var(--section-margin) auto;
+	}
+</style>

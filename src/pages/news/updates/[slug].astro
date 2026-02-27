@@ -1,0 +1,86 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../../../layouts/Page.astro';
+import { getStandaloneNews, getStandaloneNewsBySlug } from '../../../utils/events';
+
+export function getStaticPaths() {
+	return getStandaloneNews().map((item) => ({
+		params: {
+			slug: item.slug,
+		},
+	}));
+}
+
+const { slug } = Astro.params;
+const newsItem = getStandaloneNewsBySlug(slug ?? '');
+
+if (!newsItem) {
+	throw new Error(`Standalone news item not found for slug: ${slug}`);
+}
+
+const publishedDate = new Intl.DateTimeFormat('en-CH', {
+	day: '2-digit',
+	month: 'short',
+	year: 'numeric',
+}).format(new Date(newsItem.publishedAt));
+
+const Content = newsItem.Content as any;
+---
+
+<Layout seo={{ title: `${newsItem.title} | AI4Science Zurich`, description: newsItem.excerpt }}>
+	<Container narrow>
+		<article class="news-article">
+			<p class="news-article__meta">Club update • {publishedDate}</p>
+			<h1>{newsItem.title}</h1>
+			<p class="news-article__lede">{newsItem.excerpt}</p>
+			{newsItem.coverImage && (
+				<img
+					class="news-article__cover"
+					src={newsItem.coverImage}
+					alt={newsItem.coverAlt ?? newsItem.title}
+					loading="eager"
+					decoding="async"
+				/>
+			)}
+			<div class="news-article__content">
+				<Content />
+			</div>
+			<p class="news-article__back"><a href="/news">Back to all updates</a></p>
+		</article>
+	</Container>
+</Layout>
+
+<style>
+	.news-article {
+		margin: var(--section-margin) auto;
+	}
+
+	.news-article__meta {
+		opacity: 0.72;
+		font-size: var(--font-size-sm);
+	}
+
+	.news-article__lede {
+		max-width: 70ch;
+		opacity: 0.9;
+	}
+
+	.news-article__cover {
+		width: 100%;
+		border-radius: calc(var(--theme-shape-radius) + 0.25rem);
+		margin: 1rem 0 1.5rem;
+	}
+
+	.news-article__content {
+		max-width: 72ch;
+	}
+
+	.news-article__back {
+		margin-top: 2rem;
+	}
+
+	.news-article__back a {
+		text-decoration: none;
+		border-bottom: 2px solid var(--theme-primary);
+	}
+</style>

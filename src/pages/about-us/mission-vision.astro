@@ -1,0 +1,35 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../../layouts/Page.astro';
+---
+
+<Layout
+	seo={{
+		title: 'Our mission & vision | AI4Science Club Zurich',
+		description: 'Mission and vision of AI4Science Club Zurich.',
+	}}
+>
+	<Container narrow>
+		<section class="simple-page">
+			<h1>Our mission &amp; vision</h1>
+			<p>
+				AI4Science Club Zurich exists to connect people who use AI to solve real
+				scientific challenges.
+			</p>
+			<p>
+				Our vision is a stronger, faster, and more collaborative research ecosystem
+				where ideas move efficiently between disciplines and institutions.
+			</p>
+			<p>
+				We do this by hosting practical events, building connections, and sharing
+				workflows that help members turn discussions into meaningful outcomes.
+			</p>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.simple-page {
+		margin: var(--section-margin) auto;
+	}
+</style>

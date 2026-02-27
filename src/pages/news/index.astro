@@ -1,0 +1,86 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../../layouts/Page.astro';
+import { getLatestNews } from '../../utils/events';
+
+const latestNews = getLatestNews(24);
+---
+
+<Layout
+	seo={{
+		title: 'Latest at AI4Science Club Zurich',
+		description:
+			'News and updates from the AI4Science Club Zurich community and event series.',
+	}}
+>
+	<Container>
+		<section class="news-page">
+			<h1>Latest at the AI4Science Club</h1>
+			<p>
+				Updates from our event series, workshops, and community activities across
+				Zurich.
+			</p>
+			<ul class="news-page__list">
+				{
+					latestNews.map((item) => (
+						<li class="news-page__item">
+							<a class="news-page__link" href={item.url}>
+								<span class="news-page__date">
+									{new Intl.DateTimeFormat('en-CH', {
+										day: '2-digit',
+										month: 'short',
+										year: 'numeric',
+									}).format(new Date(item.publishedAt))}
+								</span>
+								<h2>{item.title}</h2>
+								<p>{item.excerpt}</p>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.news-page {
+		margin: var(--section-margin) auto;
+	}
+
+	.news-page__list {
+		margin: 2rem 0 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.news-page__item {
+		background: var(--theme-surface-1);
+		border-radius: calc(var(--theme-shape-radius) + 0.25rem);
+		transition: transform var(--theme-transition);
+	}
+
+	.news-page__item:hover {
+		transform: translateY(-2px);
+	}
+
+	.news-page__link {
+		display: block;
+		padding: 1.1rem;
+		text-decoration: none;
+	}
+
+	.news-page__date {
+		display: inline-block;
+		margin-bottom: 0.3rem;
+		font-size: var(--font-size-sm);
+		opacity: 0.7;
+	}
+
+	.news-page__link h2 {
+		margin-bottom: 0.5rem;
+		font-size: var(--font-size-lg);
+	}
+</style>

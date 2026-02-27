@@ -1,92 +1,494 @@
 ---
-import { Container, FeatureCard } from '@components/odyssey-theme';
-
 import Layout from '../layouts/Page.astro';
-import HomeHeroSection from '../components/sections/heros/HomeHeroSection.astro';
+import { Container } from '@components/odyssey-theme';
+import BannerLogo from '../components/home/BannerLogo.astro';
+import {
+	formatEventDate,
+	formatEventTime,
+	getCalendarMonth,
+	getLatestNews,
+} from '../utils/events';
+
+const latestNews = getLatestNews(12);
+const calendarMonths = Array.from({ length: 8 }, (_, index) => {
+	const referenceDate = new Date();
+	referenceDate.setDate(1);
+	referenceDate.setMonth(referenceDate.getMonth() + index);
+	return getCalendarMonth(referenceDate);
+});
 ---
 
-<Layout>
-	<HomeHeroSection />
+<Layout
+	seo={{
+		title: 'AI4Science Club Zurich',
+		description:
+			'AI4Science Club Zurich brings researchers and practitioners together to accelerate scientific discovery with AI.',
+	}}
+>
 	<Container>
-		<section class="feature-card__section">
-			<h2>Landing Pages</h2>
-			<p>
-				Use one of our landing pages to jumpstart your website or
-				ad campaign.
-			</p>
-			<div class="feature-card__grid">
-				<FeatureCard href="/landing-pages/landing-1" title="Landing Page 1" imgSrc="/assets/images/home/screenshots/landing-1">
-				</FeatureCard>
-				<FeatureCard href="/landing-pages/landing-2" title="Landing Page 2" imgSrc="/assets/images/home/screenshots/landing-2">
-				</FeatureCard>
+		<BannerLogo />
+	</Container>
+
+	<Container>
+		<section class="home-top">
+			<div class="home-top__left">
+				<h1>Connecting AI and science.</h1>
+				<p>
+					The AI4Science Club Zurich is the place to be for researchers and practitioners solving real-world scientific problems with AI.
+				</p>
+				<p>
+					We are driven by innovation at the intersection: from chemistry, life
+					science and materials to climate and physics - discovery across all can be accelerated with AI. We bridge the interdisciplinary gap and connect researchers across fields.
+					At our events, you can learn from other experts, connect to enthusiasts and find your next collaborator or co-founder, transforming scientific discovery with AI.
+				</p>
 			</div>
+
+			<aside class="home-top__right">
+				<section class="info-card">
+					<div class="info-card__header">
+						<h2>Upcoming events</h2>
+						<a href="/our-events/upcoming">View all</a>
+					</div>
+					<div class="calendar__controls">
+						<button type="button" class="calendar__nav-btn" data-calendar-prev aria-label="Previous month">&lt;</button>
+						<p class="muted" data-calendar-label>{calendarMonths[0].monthLabel}</p>
+						<button type="button" class="calendar__nav-btn" data-calendar-next aria-label="Next month">&gt;</button>
+					</div>
+					<div class="calendar" data-calendar-root>
+						{
+							calendarMonths.map((month, monthIndex) => (
+								<div
+									class={`calendar__month ${monthIndex === 0 ? 'calendar__month--active' : ''}`}
+									data-calendar-month
+									data-month-label={month.monthLabel}
+								>
+									<div class="calendar__weekdays">
+										{month.weekdayLabels.map((label) => <span>{label}</span>)}
+									</div>
+									<div class="calendar__grid">
+										{
+											month.days.map((day) => (
+												<div
+													class={`calendar__day ${day.inCurrentMonth ? '' : 'calendar__day--muted'} ${day.isToday ? 'calendar__day--today' : ''} ${day.events.length ? 'calendar__day--has-events' : ''}`}
+												>
+													<span class="calendar__day-number">{day.day}</span>
+													{day.events.length > 0 && (
+														<div class="calendar__markers">
+															{day.events.slice(0, 2).map((event) => (
+																<span class="calendar__marker" title={event.title}></span>
+															))}
+														</div>
+													)}
+													{day.events.length > 0 && (
+														<div class="calendar__tooltip">
+															<ul>
+																{day.events.map((event) => (
+																	<li>
+																		<a href={event.articleUrl}>
+																			<strong>{event.title}</strong>
+																			<span>
+																				{formatEventDate(event.startDate)} • {formatEventTime(event.startDate)}
+																			</span>
+																		</a>
+																	</li>
+																))}
+															</ul>
+														</div>
+													)}
+												</div>
+											))
+										}
+									</div>
+								</div>
+							))
+						}
+					</div>
+				</section>
+
+				<section class="info-card">
+					<div class="info-card__header">
+						<h2>Latest at the AI4Science Club</h2>
+						<a href="/news">All updates</a>
+					</div>
+					<ul class="news-list">
+						{
+							latestNews.map((item) => (
+								<li>
+									<a href={item.url}>
+										<strong>{item.title}</strong>
+										<span>
+											{new Intl.DateTimeFormat('en-CH', {
+												day: '2-digit',
+												month: 'short',
+												year: 'numeric',
+											}).format(new Date(item.publishedAt))}
+										</span>
+									</a>
+								</li>
+							))
+						}
+					</ul>
+				</section>
+			</aside>
 		</section>
 	</Container>
 
 	<Container>
-		<section class="feature-card__section">
-			<h2>Company Pages</h2>
-			<p>
-				Use one of our prebuilt company pages for your about page, contact page,
-				legal pages, blog posts, etc.
-			</p>
-			<div class="feature-card__grid">
-				<FeatureCard href="/company/about" title="About Page" imgSrc="/assets/images/home/screenshots/about">
-				</FeatureCard>
-				<FeatureCard href="/company/contact" title="Contact Page" imgSrc="/assets/images/home/screenshots/contact">
-				</FeatureCard>
-				<FeatureCard href="/blog/" title="Blog Page" imgSrc="/assets/images/home/screenshots/blog">
-				</FeatureCard>
-				<FeatureCard
-					href="/blog/posts/remote-work-mental-health"
-					title="Blog Post"
-          imgSrc="/assets/images/home/screenshots/blog-post"
-				>
-				</FeatureCard>
-				<FeatureCard
-					href="/company/legal"
-					imgSrc="/assets/images/home/screenshots/legal"
-					title="Legal Page"
-				>
-				</FeatureCard>
+		<section class="feature-links">
+			<div class="feature-links__card">
+				<h3>About us</h3>
+				<p>
+					Get to know our mission, our vision and the people behind it all.
+				</p>
+				<a href="/about-us">About us</a>
 			</div>
-		</section>
-	</Container>
-
-	<Container>
-		<section class="feature-card__section">
-			<h2>Theme Pages</h2>
-			<p>Learn more about how to set up and use the Odyssey Theme.</p>
-			<div class="feature-card__grid">
-				<FeatureCard
-					href="/theme/get-started"
-					imgSrc="/assets/images/home/screenshots/get-started"
-					title="Get Started"
-				>
-				</FeatureCard>
-				<FeatureCard
-					href="/theme/style-guide"
-					imgSrc="/assets/images/home/screenshots/style-guide"
-					title="Style Guide"
-				>
-				</FeatureCard>
+			<div class="feature-links__card">
+				<h3>Our events</h3>
+				<p>
+					Explore our upcoming events and see what we have organized in the past.
+				</p>
+				<a href="/our-events/upcoming">Our events</a>
+			</div>
+			<div class="feature-links__card">
+				<h3>Get involved</h3>
+				<p>
+					As excited as we are? Do not hesitate, get in touch today and join us.
+				</p>
+				<a href="/get-involved">Get involved</a>
 			</div>
 		</section>
 	</Container>
 </Layout>
 
+<script is:inline>
+	const calendarRoot = document.querySelector('[data-calendar-root]');
+	if (calendarRoot) {
+		const months = Array.from(calendarRoot.querySelectorAll('[data-calendar-month]'));
+		const label = document.querySelector('[data-calendar-label]');
+		const prevButton = document.querySelector('[data-calendar-prev]');
+		const nextButton = document.querySelector('[data-calendar-next]');
+		let activeIndex = 0;
+
+		const renderCalendarMonth = () => {
+			months.forEach((month, index) => {
+				month.classList.toggle('calendar__month--active', index === activeIndex);
+			});
+
+			const activeMonth = months[activeIndex];
+			if (label && activeMonth) {
+				label.textContent = activeMonth.getAttribute('data-month-label') || '';
+			}
+
+			if (prevButton) prevButton.toggleAttribute('disabled', activeIndex === 0);
+			if (nextButton) nextButton.toggleAttribute('disabled', activeIndex === months.length - 1);
+		};
+
+		prevButton?.addEventListener('click', () => {
+			if (activeIndex > 0) {
+				activeIndex -= 1;
+				renderCalendarMonth();
+			}
+		});
+
+		nextButton?.addEventListener('click', () => {
+			if (activeIndex < months.length - 1) {
+				activeIndex += 1;
+				renderCalendarMonth();
+			}
+		});
+
+		renderCalendarMonth();
+	}
+</script>
+
 <style>
-	.feature-card__section {
+	.home-top {
 		margin: var(--section-margin) auto;
-	}
-	.feature-card__grid {
 		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: var(--theme-grid-gap);
+		grid-template-columns: minmax(0, 1.2fr) minmax(280px, 0.7fr);
+		gap: 1.25rem;
+		align-items: start;
 	}
-	@media (max-width: 768px) {
-		.feature-card__grid {
+
+	.home-top__left {
+		padding: clamp(1rem, 2vw, 2rem);
+		border-radius: calc(var(--theme-shape-radius) + 0.5rem);
+		background: linear-gradient(140deg, var(--theme-surface-1), var(--theme-bg));
+	}
+
+	.home-top__left h1 {
+		max-width: 22ch;
+		margin-bottom: 1rem;
+		font-size: clamp(1.75rem, 2.1vw, 2.25rem);
+		font-family: var(--theme-font-family-sans);
+		font-weight: 600;
+		line-height: 1.25;
+	}
+
+	.home-top__left p {
+		max-width: 65ch;
+		opacity: 0.92;
+		font-size: 1rem;
+	}
+
+	.home-top__right {
+		position: sticky;
+		top: 1rem;
+		display: grid;
+		gap: 1rem;
+		max-width: 27rem;
+		justify-self: end;
+		width: 100%;
+	}
+
+	.info-card {
+		background: var(--theme-surface-1);
+		color: var(--theme-on-surface-1);
+		padding: 1rem;
+		border-radius: calc(var(--theme-shape-radius) + 0.5rem);
+	}
+
+	.info-card__header {
+		display: flex;
+		justify-content: space-between;
+		gap: 0.75rem;
+		align-items: baseline;
+		margin-bottom: 0.35rem;
+	}
+
+	.info-card__header h2 {
+		font-size: var(--font-size-lg);
+	}
+
+	.info-card__header a {
+		text-decoration: none;
+		font-size: var(--font-size-sm);
+		opacity: 0.82;
+	}
+
+	.info-card__header a:hover {
+		opacity: 1;
+	}
+
+	.muted {
+		font-size: var(--font-size-sm);
+		opacity: 0.72;
+	}
+
+	.calendar__controls {
+		display: grid;
+		grid-template-columns: 2rem minmax(0, 1fr) 2rem;
+		align-items: center;
+		gap: 0.35rem;
+		margin: 0.2rem 0 0.45rem;
+	}
+
+	.calendar__nav-btn {
+		border: 1px solid var(--theme-surface-2);
+		background: var(--theme-bg);
+		color: var(--theme-on-bg);
+		border-radius: 0.45rem;
+		width: 2rem;
+		height: 2rem;
+		padding: 0;
+		display: grid;
+		place-items: center;
+		cursor: pointer;
+	}
+
+	.calendar__nav-btn[disabled] {
+		opacity: 0.35;
+		cursor: default;
+	}
+
+	.calendar__controls .muted {
+		margin: 0;
+		text-align: center;
+		line-height: 1.15;
+	}
+
+	.calendar {
+		margin-top: 0.35rem;
+		position: relative;
+	}
+
+	.calendar__weekdays,
+	.calendar__grid {
+		display: grid;
+		grid-template-columns: repeat(7, minmax(0, 1fr));
+		gap: 0.35rem;
+	}
+
+	.calendar__weekdays {
+		margin-bottom: 0.35rem;
+		font-size: 0.72rem;
+		opacity: 0.7;
+	}
+
+	.calendar__month {
+		display: none;
+	}
+
+	.calendar__month--active {
+		display: block;
+	}
+
+	.calendar__day {
+		position: relative;
+		padding: 0.35rem;
+		border-radius: 0.5rem;
+		background: var(--theme-bg);
+		border: 1px solid var(--theme-surface-2);
+		min-height: 2.4rem;
+	}
+
+	.calendar__day--muted {
+		opacity: 0.4;
+	}
+
+	.calendar__day--today {
+		outline: 2px solid var(--theme-primary);
+	}
+
+	.calendar__day-number {
+		font-size: 0.75rem;
+	}
+
+	.calendar__day--has-events {
+		cursor: default;
+	}
+
+	.calendar__markers {
+		display: flex;
+		gap: 0.2rem;
+		margin-top: 0.1rem;
+	}
+
+	.calendar__marker {
+		width: 0.35rem;
+		height: 0.35rem;
+		border-radius: 50%;
+		background: var(--theme-primary);
+	}
+
+	.calendar__tooltip {
+		position: absolute;
+		top: calc(100% + 0.25rem);
+		left: 0;
+		z-index: 50;
+		width: min(18rem, 75vw);
+		display: none;
+		background: var(--theme-surface-1);
+		border: 1px solid var(--theme-surface-2);
+		border-radius: 0.6rem;
+		padding: 0.45rem;
+		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.2);
+	}
+
+	.calendar__day:hover .calendar__tooltip,
+	.calendar__day:focus-within .calendar__tooltip {
+		display: block;
+	}
+
+	.calendar__tooltip ul {
+		list-style: none;
+		margin: 0;
+		padding: 0;
+		display: grid;
+		gap: 0.3rem;
+	}
+
+	.calendar__tooltip li a {
+		display: grid;
+		gap: 0.05rem;
+		padding: 0.35rem 0.4rem;
+		text-decoration: none;
+		border-radius: 0.45rem;
+	}
+
+	.calendar__tooltip li a:hover {
+		background: var(--theme-bg);
+	}
+
+	.calendar__tooltip li span {
+		font-size: var(--font-size-sm);
+		opacity: 0.8;
+	}
+
+	.news-list {
+		list-style: none;
+		padding: 0;
+		margin: 0.85rem 0 0;
+		display: grid;
+		gap: 0.55rem;
+		max-height: 9.25rem;
+		overflow-y: auto;
+		padding-right: 0.2rem;
+	}
+
+	.news-list li {
+		background: var(--theme-bg);
+		border: 1px solid var(--theme-surface-2);
+		border-radius: 0.65rem;
+	}
+
+	.news-list li a {
+		display: flex;
+		flex-direction: column;
+		gap: 0.12rem;
+		text-decoration: none;
+		padding: 0.65rem 0.7rem;
+	}
+
+	.news-list li a span {
+		font-size: var(--font-size-sm);
+		opacity: 0.78;
+	}
+
+	.feature-links {
+		margin: var(--section-margin) auto;
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 1rem;
+	}
+
+	.feature-links__card {
+		background: var(--theme-surface-1);
+		color: var(--theme-on-surface-1);
+		padding: 1.25rem;
+		border-radius: calc(var(--theme-shape-radius) + 0.5rem);
+	}
+
+	.feature-links__card h3 {
+		margin-bottom: 0.6rem;
+	}
+
+	.feature-links__card a {
+		display: inline-block;
+		margin-top: 0.75rem;
+		text-decoration: none;
+		border-bottom: 2px solid var(--theme-primary);
+	}
+
+	@media (max-width: 1100px) {
+		.home-top {
 			grid-template-columns: 1fr;
+		}
+
+		.home-top__right {
+			position: static;
+		}
+	}
+
+	@media (max-width: 900px) {
+		.feature-links {
+			grid-template-columns: 1fr;
+		}
+	}
+
+	@media (max-width: 768px) {
+		.news-list {
+			max-height: 9.25rem;
 		}
 	}
 </style>

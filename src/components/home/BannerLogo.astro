@@ -1,0 +1,45 @@
+---
+---
+
+<section class="banner-logo" aria-label="AI4Science Club Zurich banner">
+	<img
+		class="banner-logo__image banner-logo__image--dark"
+		src="/assets/images/brand/Logo_black.png"
+		alt="AI4Science Club Zurich banner logo for dark mode"
+		width="2816"
+		height="1536"
+	/>
+	<img
+		class="banner-logo__image banner-logo__image--light"
+		src="/assets/images/brand/Logo_white.png"
+		alt="AI4Science Club Zurich banner logo for light mode"
+		width="2816"
+		height="1536"
+	/>
+</section>
+
+<style>
+	.banner-logo {
+		margin-top: 1rem;
+		border-radius: calc(var(--theme-shape-radius) + 0.5rem);
+		overflow: hidden;
+	}
+
+	.banner-logo__image {
+		display: block;
+		width: 100%;
+		height: auto;
+	}
+
+	.banner-logo__image--light {
+		display: none;
+	}
+
+	:global(html[data-theme='light']) .banner-logo__image--light {
+		display: block;
+	}
+
+	:global(html[data-theme='light']) .banner-logo__image--dark {
+		display: none;
+	}
+</style>

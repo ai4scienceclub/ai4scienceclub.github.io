@@ -1,0 +1,68 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../../layouts/Page.astro';
+import { formatEventDate, formatEventTime, getUpcomingEvents } from '../../utils/events';
+
+const upcomingEvents = getUpcomingEvents(100);
+---
+
+<Layout
+	seo={{
+		title: 'Upcoming events | AI4Science Club Zurich',
+		description: 'Upcoming events from AI4Science Club Zurich.',
+	}}
+>
+	<Container>
+		<section class="events-page">
+			<h1>Upcoming events</h1>
+			<p>Plan ahead with our next workshops, talks, and meetups.</p>
+			<ul class="events-page__list">
+				{
+					upcomingEvents.map((event) => (
+						<li>
+							<a href={event.articleUrl}>
+								<strong>{event.title}</strong>
+								<span>{event.series}</span>
+								<span>
+									{formatEventDate(event.startDate)} • {formatEventTime(event.startDate)}
+								</span>
+								<span>{event.location}</span>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.events-page {
+		margin: var(--section-margin) auto;
+	}
+
+	.events-page__list {
+		margin: 1.5rem 0 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		gap: 0.8rem;
+	}
+
+	.events-page__list li {
+		background: var(--theme-surface-1);
+		border-radius: calc(var(--theme-shape-radius) + 0.25rem);
+	}
+
+	.events-page__list li a {
+		display: flex;
+		flex-direction: column;
+		text-decoration: none;
+		padding: 0.95rem;
+	}
+
+	.events-page__list li a span {
+		font-size: var(--font-size-sm);
+		opacity: 0.8;
+	}
+</style>

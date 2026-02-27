@@ -1,18 +1,23 @@
 export const nav = [
 	{
-		title: 'Home',
-		slug: '/',
+		title: 'About us',
+		slug: '/about-us',
 	},
 	{
-		title: 'Blog',
-		slug: '/blog',
+		title: 'Our events',
+		children: [
+			{
+				title: 'Upcoming events',
+				slug: '/our-events/upcoming',
+			},
+			{
+				title: 'Past events',
+				slug: '/our-events/past',
+			},
+		],
 	},
 	{
-		title: 'About',
-		slug: '/company/about',
-	},
-	{
-		title: 'Contact',
-		slug: '/company/contact',
+		title: 'News',
+		slug: '/news',
 	},
 ];

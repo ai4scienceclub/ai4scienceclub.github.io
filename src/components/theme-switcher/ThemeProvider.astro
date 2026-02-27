@@ -3,10 +3,32 @@
 
 <!-- This is a simple script to check if there is a theme value in local storage. That way the theme stays with you between pages -->
 <script is:inline>
-	const doc = document.firstElementChild;
+	const doc = document.documentElement;
 	const localStorageTheme = localStorage.getItem('theme');
+	const validThemes = ['light', 'dark'];
+	const getFaviconPath = (theme) =>
+		theme === 'light'
+			? '/assets/images/brand/Icon_white.png'
+			: '/assets/images/brand/Icon_black.png';
 
-	if (localStorageTheme !== null) {
-		doc.setAttribute('data-theme', localStorageTheme);
+	const applyTheme = (theme) => {
+		doc.setAttribute('data-theme', theme);
+
+		let favicon = document.querySelector("link[rel='icon']");
+		if (!favicon) {
+			favicon = document.createElement('link');
+			favicon.setAttribute('rel', 'icon');
+			favicon.setAttribute('type', 'image/png');
+			document.head.appendChild(favicon);
+		}
+		favicon.setAttribute('href', getFaviconPath(theme));
+	};
+
+	if (localStorageTheme === 'default') {
+		applyTheme('light');
+	} else if (localStorageTheme && validThemes.includes(localStorageTheme)) {
+		applyTheme(localStorageTheme);
+	} else {
+		applyTheme('dark');
 	}
 </script>

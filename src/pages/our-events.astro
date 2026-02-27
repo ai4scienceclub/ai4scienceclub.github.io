@@ -1,0 +1,45 @@
+---
+import { Button, Container } from '@components/odyssey-theme';
+import Layout from '../layouts/Page.astro';
+---
+
+<Layout
+	seo={{
+		title: 'Our events | AI4Science Club Zurich',
+		description: 'Upcoming and past events from AI4Science Club Zurich.',
+	}}
+>
+	<Container>
+		<section class="events-page">
+			<h1>Our events</h1>
+			<p>
+				Explore our program through two dedicated sections: upcoming sessions and
+				past events with recaps.
+			</p>
+			<div class="events-page__actions">
+				<Button href="/our-events/upcoming">Upcoming events</Button>
+				<Button href="/our-events/past" unelevated>Past events</Button>
+			</div>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.events-page {
+		margin: var(--section-margin) auto;
+	}
+
+	.events-page__actions {
+		margin-top: 1rem;
+		display: flex;
+		gap: 0.75rem;
+		align-items: center;
+	}
+
+	@media (max-width: 700px) {
+		.events-page__actions {
+			flex-direction: column;
+			align-items: flex-start;
+		}
+	}
+</style>
