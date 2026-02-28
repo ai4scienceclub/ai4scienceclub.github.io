@@ -1,7 +1,7 @@
 ---
 title: The AI4Science club is founded
 excerpt: The AI4Science club is founded with the goal of connecting enthusiasts in the field and making Zurich the place to be for AI4Science.
-coverImage: ../../../public/assets/images/brand/Logo_black.png
+coverImage: /assets/images/brand/Logo_black.png
 coverAlt: Logo of the AI4Science Zurich club
 publishedAt: 2026-01-23
 ---
