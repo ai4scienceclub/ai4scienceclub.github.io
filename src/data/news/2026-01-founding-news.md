@@ -1,10 +1,9 @@
 ---
-title: The AI4Science club is founded
-excerpt: The AI4Science club is founded with the goal of connecting enthusiasts in the field and making Zurich the place to be for AI4Science.
-coverImage: /assets/images/brand/Logo_black.png
-coverAlt: Logo of the AI4Science Zurich club
-publishedAt: 2026-01-23
+title: ETH AI Center supports the AI4Science club
+excerpt: The AI4Science club is supported by the ETH AI Center as an academic organization.
+publishedAt: 2026-03-27
 ---
 
-The AI4Science club was founded on January 23rd, 2026 by Malte Franke, Stefan P. Schmid and Shaun O'Hare as its founding members.
-Malte was elected as president, while both Stefan and Shaun serve on the board as vice-presidents.
+The AI4Science Zurich club and the ETH AI Center have formalized their collaboration. 
+In a letter of support, the ETH AI Center recognizes the AI4Science club as a complementary initiative strengthening Zurich's AI ecosystem, alongside established organizations such as the ETH AI Club and the Zurich AI initiative. 
+Both organizations will collaborate on events, with the ETH AI Center offering venue support and outreach, while the AI4Science club is focused on bringing together researchers across domains.
