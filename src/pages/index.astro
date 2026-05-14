@@ -37,6 +37,13 @@ const partners = [
 	},
 ];
 
+const SERIES_MARKER_COLORS: Record<string, string> = {
+	'data-ml-lunch': 'hsl(190, 70%, 55%)',
+	'academic-talks': 'hsl(35, 90%, 55%)',
+	academic_talks: 'hsl(35, 90%, 55%)',
+};
+const DEFAULT_MARKER_COLOR = 'var(--theme-primary)';
+
 const CALENDAR_MONTHS_BEFORE = 2;
 const CALENDAR_MONTHS_AFTER = 12;
 const calendarMonths = Array.from(
@@ -182,7 +189,11 @@ const buildMonthKey = buildIsoDate.slice(0, 7);
 													{day.events.length > 0 && (
 														<div class="calendar__markers">
 															{day.events.slice(0, 2).map((event) => (
-																<span class="calendar__marker" title={event.title}></span>
+																<span
+																	class="calendar__marker"
+																	title={event.title}
+																	style={`background: ${SERIES_MARKER_COLORS[event.seriesSlug] ?? DEFAULT_MARKER_COLOR}`}
+																></span>
 															))}
 														</div>
 													)}
