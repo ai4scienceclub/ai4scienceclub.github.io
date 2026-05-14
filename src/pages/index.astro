@@ -37,12 +37,24 @@ const partners = [
 	},
 ];
 
-const calendarMonths = Array.from({ length: 8 }, (_, index) => {
-	const referenceDate = new Date();
-	referenceDate.setDate(1);
-	referenceDate.setMonth(referenceDate.getMonth() + index);
-	return getCalendarMonth(referenceDate);
-});
+const CALENDAR_MONTHS_BEFORE = 2;
+const CALENDAR_MONTHS_AFTER = 12;
+const calendarMonths = Array.from(
+	{ length: CALENDAR_MONTHS_BEFORE + 1 + CALENDAR_MONTHS_AFTER },
+	(_, index) => {
+		const referenceDate = new Date();
+		referenceDate.setDate(1);
+		referenceDate.setMonth(referenceDate.getMonth() - CALENDAR_MONTHS_BEFORE + index);
+		return getCalendarMonth(referenceDate);
+	},
+);
+const buildIsoDate = new Intl.DateTimeFormat('en-CA', {
+	timeZone: 'Europe/Zurich',
+	year: 'numeric',
+	month: '2-digit',
+	day: '2-digit',
+}).format(new Date());
+const buildMonthKey = buildIsoDate.slice(0, 7);
 ---
 
 <Layout
@@ -145,13 +157,16 @@ const calendarMonths = Array.from({ length: 8 }, (_, index) => {
 						<p class="muted" data-calendar-label>{calendarMonths[0].monthLabel}</p>
 						<button type="button" class="calendar__nav-btn" data-calendar-next aria-label="Next month">&gt;</button>
 					</div>
-					<div class="calendar" data-calendar-root>
+					<div class="calendar" data-calendar-root data-build-month={buildMonthKey}>
 						{
-							calendarMonths.map((month, monthIndex) => (
+							calendarMonths.map((month) => {
+								const monthKey = month.days.find((day) => day.inCurrentMonth)?.isoDate.slice(0, 7) ?? '';
+								return (
 								<div
-									class={`calendar__month ${monthIndex === 0 ? 'calendar__month--active' : ''}`}
+									class={`calendar__month ${monthKey === buildMonthKey ? 'calendar__month--active' : ''}`}
 									data-calendar-month
 									data-month-label={month.monthLabel}
+									data-month-key={monthKey}
 								>
 									<div class="calendar__weekdays">
 										{month.weekdayLabels.map((label) => <span>{label}</span>)}
@@ -160,7 +175,8 @@ const calendarMonths = Array.from({ length: 8 }, (_, index) => {
 										{
 											month.days.map((day) => (
 												<div
-													class={`calendar__day ${day.inCurrentMonth ? '' : 'calendar__day--muted'} ${day.isToday ? 'calendar__day--today' : ''} ${day.events.length ? 'calendar__day--has-events' : ''}`}
+													class={`calendar__day ${day.inCurrentMonth ? '' : 'calendar__day--muted'} ${day.events.length ? 'calendar__day--has-events' : ''}`}
+													data-iso-date={day.isoDate}
 												>
 													<span class="calendar__day-number">{day.day}</span>
 													{day.events.length > 0 && (
@@ -191,7 +207,8 @@ const calendarMonths = Array.from({ length: 8 }, (_, index) => {
 										}
 									</div>
 								</div>
-							))
+								);
+							})
 						}
 					</div>
 				</section>
@@ -258,7 +275,29 @@ const calendarMonths = Array.from({ length: 8 }, (_, index) => {
 		const label = document.querySelector('[data-calendar-label]');
 		const prevButton = document.querySelector('[data-calendar-prev]');
 		const nextButton = document.querySelector('[data-calendar-next]');
-		let activeIndex = 0;
+
+		const todayIsoDate = new Intl.DateTimeFormat('en-CA', {
+			timeZone: 'Europe/Zurich',
+			year: 'numeric',
+			month: '2-digit',
+			day: '2-digit',
+		}).format(new Date());
+		const todayMonthKey = todayIsoDate.slice(0, 7);
+
+		calendarRoot.querySelectorAll('[data-iso-date]').forEach((day) => {
+			day.classList.toggle(
+				'calendar__day--today',
+				day.getAttribute('data-iso-date') === todayIsoDate,
+			);
+		});
+
+		const monthKeyToIndex = (key) =>
+			months.findIndex((month) => month.getAttribute('data-month-key') === key);
+		let activeIndex = monthKeyToIndex(todayMonthKey);
+		if (activeIndex === -1) {
+			activeIndex = monthKeyToIndex(calendarRoot.getAttribute('data-build-month') || '');
+		}
+		if (activeIndex === -1) activeIndex = 0;
 
 		const renderCalendarMonth = () => {
 			months.forEach((month, index) => {
