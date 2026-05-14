@@ -43,6 +43,11 @@ const Content = event.Content as any;
 						<strong>Registration:</strong> <a href={event.registrationUrl} target="_blank" rel="noreferrer">Open registration</a>
 					</p>
 				)}
+				<p>
+					<a class="news-article__ics" href={`/news/${event.seriesSlug}/${event.slug}.ics`} download>
+						Add to calendar (.ics)
+					</a>
+				</p>
 			</div>
 			{event.coverImage && (
 				<img
@@ -98,6 +103,11 @@ const Content = event.Content as any;
 	}
 
 	.news-article__back a {
+		text-decoration: none;
+		border-bottom: 2px solid var(--theme-primary);
+	}
+
+	.news-article__ics {
 		text-decoration: none;
 		border-bottom: 2px solid var(--theme-primary);
 	}
