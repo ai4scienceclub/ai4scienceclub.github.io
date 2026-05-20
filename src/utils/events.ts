@@ -79,6 +79,17 @@ export type NewsItem = {
 	source: 'event' | 'standalone';
 };
 
+export type SpeakerItem = {
+	name: string;
+	affiliation: string;
+	series: string;
+	image: string;
+	imageAlt: string;
+	eventUrl: string;
+	eventTitle: string;
+	startDate: Date;
+};
+
 export type CalendarDay = {
 	isoDate: string;
 	day: number;
@@ -510,6 +521,44 @@ export function getPastEvents(limit?: number) {
 		.sort((a, b) => b.startDate.getTime() - a.startDate.getTime());
 
 	return typeof limit === 'number' ? pastEvents.slice(0, limit) : pastEvents;
+}
+
+function parseSpeakerFromTitle(title: string) {
+	const dashIndex = title.indexOf(' - ');
+	const speakerPart = dashIndex === -1 ? title : title.slice(dashIndex + 3);
+	const trimmed = speakerPart.trim();
+	const parenMatch = trimmed.match(/^(.+?)\s*\(([^)]+)\)\s*$/);
+	if (parenMatch) {
+		return { name: parenMatch[1].trim(), affiliation: parenMatch[2].trim() };
+	}
+	return { name: trimmed, affiliation: '' };
+}
+
+export function getPastSpeakers(): SpeakerItem[] {
+	const seen = new Set<string>();
+	const speakers: SpeakerItem[] = [];
+
+	for (const event of getPastEvents()) {
+		if (!event.coverImage) continue;
+		const { name, affiliation } = parseSpeakerFromTitle(event.title);
+		if (!name) continue;
+		const key = `${name}|${affiliation}`;
+		if (seen.has(key)) continue;
+		seen.add(key);
+
+		speakers.push({
+			name,
+			affiliation,
+			series: event.series,
+			image: event.coverImage,
+			imageAlt: `Portrait of ${name}`,
+			eventUrl: event.articleUrl,
+			eventTitle: event.title,
+			startDate: event.startDate,
+		});
+	}
+
+	return speakers;
 }
 
 export function getStandaloneNews() {

@@ -15,7 +15,7 @@ tags:
   - Chemistry
   - Talkseries
 status: upcoming
-coverImage: 
+coverImage: /assets/events/photos/academic_talks/2026-05-22-PhilippeSchwaller/philippe_schwaller.jpg
 ---
 
 # Language Models and Agentic AI for Chemistry
