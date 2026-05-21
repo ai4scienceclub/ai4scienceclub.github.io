@@ -9,6 +9,11 @@ export const footerSocials = [
     url: 'mailto:info@ai4science.ch',
     icon: "mdi:email-outline",
   },
+  {
+    name: 'LinkedIn',
+    url: 'https://www.linkedin.com/company/ai4science-zurich/',
+    icon: "mdi:linkedin",
+  },
 ]
 
 export const footerLists = [
