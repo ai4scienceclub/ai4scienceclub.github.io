@@ -661,6 +661,7 @@ export function formatEventDate(date: Date) {
 	return EVENT_DATE_FORMATTER.format(date);
 }
 
-export function formatEventTime(date: Date) {
+export function formatEventTime(date: Date, startsAt?: string) {
+	if (startsAt && /^\d{4}-\d{2}-\d{2}$/.test(startsAt)) return 'Time TBA';
 	return EVENT_TIME_FORMATTER.format(date);
 }

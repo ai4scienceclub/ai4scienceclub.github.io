@@ -24,7 +24,7 @@ const upcomingEvents = getUpcomingEvents(100);
 								<strong>{event.title}</strong>
 								<span>{event.series}</span>
 								<span>
-									{formatEventDate(event.startDate)} • {formatEventTime(event.startDate)}
+									{formatEventDate(event.startDate)} • {formatEventTime(event.startDate, event.startsAt)}
 								</span>
 								<span>{event.location}</span>
 							</a>

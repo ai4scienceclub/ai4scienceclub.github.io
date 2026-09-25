@@ -38,7 +38,7 @@ const Content = event.Content as any;
 					<h1>{event.articleTitle}</h1>
 					<p class="news-article__lede">{event.articleExcerpt}</p>
 					<div class="news-article__details">
-						<p><strong>When:</strong> {formatEventDate(event.startDate)} at {formatEventTime(event.startDate)}</p>
+						<p><strong>When:</strong> {formatEventDate(event.startDate)} • {formatEventTime(event.startDate, event.startsAt)}</p>
 						<p><strong>Where:</strong> {event.location}</p>
 						{event.registrationUrl && (
 							<p>

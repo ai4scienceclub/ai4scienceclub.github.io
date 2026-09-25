@@ -32,16 +32,30 @@ function eventToVEventLines(event: EventItem, site: URL): string[] {
 	const uid = `${event.seriesSlug}-${event.slug}@ai4science.ch`;
 	const articleUrl = new URL(event.articleUrl, site).toString();
 	const descriptionParts = [event.summary];
+	const dateOnly = /^\d{4}-\d{2}-\d{2}$/.test(event.startsAt);
+	if (dateOnly) descriptionParts.push('Time to be announced; this is a full-day calendar placeholder.');
 	if (event.registrationUrl) descriptionParts.push(`Register: ${event.registrationUrl}`);
 	descriptionParts.push(`More info: ${articleUrl}`);
 	const description = descriptionParts.join('\n');
+	let dateLines = [
+		`DTSTART:${formatUtc(event.startDate)}`,
+		`DTEND:${formatUtc(event.endDate)}`,
+	];
+	if (dateOnly) {
+		const end = new Date(`${(event.endsAt ?? event.startsAt).slice(0, 10)}T00:00:00Z`);
+		end.setUTCDate(end.getUTCDate() + 1);
+		dateLines = [
+			`DTSTART;VALUE=DATE:${event.startsAt.replace(/-/g, '')}`,
+			`DTEND;VALUE=DATE:${end.toISOString().slice(0, 10).replace(/-/g, '')}`,
+			'TRANSP:TRANSPARENT',
+		];
+	}
 
 	return [
 		'BEGIN:VEVENT',
 		`UID:${uid}`,
 		`DTSTAMP:${formatUtc(event.startDate)}`,
-		`DTSTART:${formatUtc(event.startDate)}`,
-		`DTEND:${formatUtc(event.endDate)}`,
+		...dateLines,
 		`SUMMARY:${escapeText(event.title)}`,
 		`DESCRIPTION:${escapeText(description)}`,
 		`LOCATION:${escapeText(event.location)}`,

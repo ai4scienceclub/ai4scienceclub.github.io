@@ -40,6 +40,11 @@ status: upcoming
 Event/article text here.
 ```
 
+If the time is not confirmed, use a date-only value such as `startsAt: "2026-10-01"`
+and omit `endsAt`. The site displays "Time TBA", and calendar downloads use a
+full-day placeholder marked as free, with a note that the time is to be announced.
+Use `location: "To be announced"` if the venue is not confirmed.
+
 Photos:
 
 - `public/assets/events/photos/<series-slug>/<event-slug>/`

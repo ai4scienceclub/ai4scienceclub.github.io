@@ -206,7 +206,7 @@ const buildMonthKey = buildIsoDate.slice(0, 7);
 																		<a href={event.articleUrl}>
 																			<strong>{event.title}</strong>
 																			<span>
-																				{formatEventDate(event.startDate)} • {formatEventTime(event.startDate)}
+																				{formatEventDate(event.startDate)} • {formatEventTime(event.startDate, event.startsAt)}
 																			</span>
 																		</a>
 																	</li>

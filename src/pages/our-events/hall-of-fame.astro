@@ -1,0 +1,170 @@
+---
+import { Container } from '@components/odyssey-theme';
+import Layout from '../../layouts/Page.astro';
+import { getPastSpeakers } from '../../utils/events';
+
+const speakers = getPastSpeakers();
+---
+
+<Layout
+	seo={{
+		title: 'Hall of Fame | AI4Science Club Zurich',
+		description: 'Speakers who have presented at AI4Science Club Zurich events.',
+	}}
+>
+	<Container>
+		<section class="hall-of-fame">
+			<h1>Hall of Fame</h1>
+			<p>Speakers who have shared their work with our community.</p>
+			<ul class="hall-of-fame__grid">
+				<li class="speaker-card speaker-card--invite">
+					<a href="mailto:info@ai4science.ch">
+						<div class="speaker-card__invite">
+							<h3>Interested in presenting?</h3>
+							<p>Reach out!</p>
+							<span class="speaker-card__email">info@ai4science.ch</span>
+						</div>
+					</a>
+				</li>
+				{
+					speakers.map((speaker) => (
+						<li class="speaker-card">
+							<a href={speaker.eventUrl}>
+								<div class="speaker-card__media">
+									<img
+										src={speaker.image}
+										alt={speaker.imageAlt}
+										loading="lazy"
+										decoding="async"
+									/>
+								</div>
+								<div class="speaker-card__meta">
+									<h3>{speaker.name}</h3>
+									{speaker.affiliation && <p>{speaker.affiliation}</p>}
+									<span class="speaker-card__series">{speaker.series}</span>
+								</div>
+							</a>
+						</li>
+					))
+				}
+			</ul>
+		</section>
+	</Container>
+</Layout>
+
+<style>
+	.hall-of-fame {
+		margin: var(--section-margin) auto;
+	}
+
+	.hall-of-fame__grid {
+		margin: 1.5rem 0 0;
+		padding: 0;
+		list-style: none;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.9rem;
+	}
+
+	.speaker-card {
+		background: var(--theme-surface-1);
+		color: var(--theme-on-surface-1);
+		border-radius: calc(var(--theme-shape-radius) + 0.4rem);
+		overflow: hidden;
+	}
+
+	.speaker-card > a {
+		display: flex;
+		flex-direction: column;
+		height: 100%;
+		text-decoration: none;
+		color: inherit;
+		padding: 0.7rem;
+	}
+
+	.speaker-card__media {
+		width: 100%;
+		aspect-ratio: 4 / 5;
+		border-radius: calc(var(--theme-shape-radius) + 0.25rem);
+		overflow: hidden;
+		background: var(--theme-bg);
+		margin-bottom: 0.65rem;
+	}
+
+	.speaker-card__media img {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		display: block;
+	}
+
+	.speaker-card__meta h3 {
+		font-size: var(--font-size-md);
+		margin: 0 0 0.2rem;
+	}
+
+	.speaker-card__meta p {
+		margin: 0;
+		font-weight: 700;
+		font-size: 0.98rem;
+	}
+
+	.speaker-card__series {
+		display: block;
+		margin-top: 0.2rem;
+		font-size: var(--font-size-sm);
+		opacity: 0.75;
+	}
+
+	.speaker-card--invite {
+		background: var(--theme-primary, var(--theme-surface-2));
+		color: var(--theme-on-primary, var(--theme-on-surface-1));
+	}
+
+	.speaker-card--invite > a {
+		justify-content: center;
+		align-items: stretch;
+		min-height: 100%;
+	}
+
+	.speaker-card__invite {
+		aspect-ratio: 4 / 5;
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: flex-start;
+		padding: 1rem;
+		gap: 0.4rem;
+	}
+
+	.speaker-card__invite h3 {
+		margin: 0;
+		font-size: var(--font-size-lg);
+		line-height: 1.15;
+	}
+
+	.speaker-card__invite p {
+		margin: 0;
+		font-size: var(--font-size-md);
+		font-weight: 700;
+	}
+
+	.speaker-card__email {
+		margin-top: 0.6rem;
+		font-size: var(--font-size-sm);
+		text-decoration: underline;
+		word-break: break-all;
+	}
+
+	@media (max-width: 1000px) {
+		.hall-of-fame__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media (max-width: 600px) {
+		.hall-of-fame__grid {
+			grid-template-columns: 1fr;
+		}
+	}
+</style>
